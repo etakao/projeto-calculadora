@@ -1,5 +1,5 @@
-import { Delete } from 'lucide-react';
 import { useState } from 'react';
+import { Delete } from 'lucide-react';
 
 interface CalculatorKeysProps {
   type: string;
@@ -270,6 +270,8 @@ export default function App() {
 
           return newExpression;
         });
+
+        return;
       }
     }
 
@@ -293,8 +295,8 @@ export default function App() {
 
           newExpression[lastExpressionIndex] = {
             ...item,
-            value: item.value.slice(item.value.length - 2),
-            title: item.title.slice(item.title.length - 2),
+            value: item.value.slice(0, -1),
+            title: item.title.slice(0, -1),
           };
 
           return newExpression;
@@ -304,14 +306,43 @@ export default function App() {
     }
   }
 
+  function handleClearEntry() {
+    if (expression.length > 0) {
+      const lastExpressionIndex = expression.length - 1;
+      setExpression((prevState) => prevState.splice(lastExpressionIndex, 1));
+    }
+  }
+
   function handleClear() {
     setExpression([]);
     setList([]);
     setStack([]);
   }
 
-  function handleCalculate() {
-    console.log('Calula resultado');
+  function handleCalculateResult() {
+    expression.forEach((expressionItem) => {
+      if (expressionItem.type === 'number') {
+        setList((prevState) => [...prevState, expressionItem]);
+      } else {
+        if (stack.length > 0) {
+          stack.forEach((stackItem, stackIndex) => {
+            if (stackItem.precedence! >= expressionItem.precedence!) {
+              setList((prevState) => [...prevState, stackItem]);
+
+              setStack((prevState) => {
+                const newStack = [...prevState];
+
+                newStack.splice(stackIndex, 1);
+
+                return newStack;
+              });
+            }
+          });
+
+          setStack((prevState) => [expressionItem, ...prevState]);
+        } else setStack((prevState) => [expressionItem, ...prevState]);
+      }
+    });
   }
 
   return (
@@ -337,7 +368,7 @@ export default function App() {
             </button>
             <button
               className='key-box | w-16 h-16 flex items-center justify-center text-xl bg-orange-600 rounded-full hover:bg-orange-500 duration-200'
-              onClick={handleBackspace}
+              onClick={handleClearEntry}
             >
               CE
             </button>
@@ -361,7 +392,7 @@ export default function App() {
                       <button
                         key={index}
                         className='key-box | w-16 h-16 flex items-center justify-center text-xl bg-orange-600 rounded-full hover:bg-orange-500 duration-200'
-                        onClick={handleCalculate}
+                        onClick={handleCalculateResult}
                       >
                         {data.title}
                       </button>
