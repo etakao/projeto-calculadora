@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Delete } from 'lucide-react';
 
+import { calculatorKeys } from './utils/calculatorKeys';
+
 interface CalculatorKeysProps {
   type: string;
   title: string;
@@ -10,244 +12,13 @@ interface CalculatorKeysProps {
 
 export default function App() {
   const [expression, setExpression] = useState<CalculatorKeysProps[]>([]);
-  const [stack, setStack] = useState<CalculatorKeysProps[]>([]);
-  const [list, setList] = useState<CalculatorKeysProps[]>([]);
+  // const [stack, setStack] = useState<CalculatorKeysProps[]>([]);
+  // const [list, setList] = useState<CalculatorKeysProps[]>([]);
+  const [result, setResult] = useState<number | null>();
 
-  // const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-  // const operadores = [
-  //   '+',
-  //   '-',
-  //   '*',
-  //   '/',
-  //   '~',
-  //   '^',
-  //   '(',
-  //   ')',
-  //   'sin',
-  //   'cos',
-  //   'tan',
-  //   '!',
-  // ];
-
-  const calculatorRows = [
-    // Primeira linha
-    [
-      {
-        type: 'memory',
-        title: 'MC',
-        value: 'MC',
-      },
-      {
-        type: 'operator',
-        title: 'ln',
-        value: 'ln',
-        precedence: 7,
-      },
-      {
-        type: 'operator',
-        title: 'log',
-        value: 'log',
-        precedence: 7,
-      },
-      {
-        type: 'operator',
-        title: 'n!',
-        value: '!',
-        precedence: 7,
-      },
-      {
-        type: 'operator',
-        title: '1/x',
-        value: '1/',
-        precedence: 7,
-      },
-      {
-        type: 'operator',
-        title: 'sin',
-        value: 'sin',
-        precedence: 7,
-      },
-      {
-        type: 'operator',
-        title: 'eˣ',
-        value: 'e^',
-        precedence: 7,
-      },
-    ],
-    // Segunda linha
-    [
-      {
-        type: 'memory',
-        title: 'MR',
-        value: 'MR',
-      },
-      {
-        type: 'number',
-        title: '7',
-        value: '7',
-      },
-      {
-        type: 'number',
-        title: '8',
-        value: '8',
-      },
-      {
-        type: 'number',
-        title: '9',
-        value: '9',
-      },
-      {
-        type: 'operator',
-        title: '/',
-        value: '/',
-        precedence: 4,
-      },
-      {
-        type: 'operator',
-        title: 'cos',
-        value: 'cos',
-        precedence: 7,
-      },
-      {
-        type: 'operator',
-        title: 'xʸ',
-        value: '^',
-        precedence: 5,
-      },
-    ],
-    // Terceira linha
-    [
-      {
-        type: 'memory',
-        title: 'MS',
-        value: 'MS',
-      },
-      {
-        type: 'number',
-        title: '4',
-        value: '4',
-      },
-      {
-        type: 'number',
-        title: '5',
-        value: '5',
-      },
-      {
-        type: 'number',
-        title: '6',
-        value: '6',
-      },
-      {
-        type: 'operator',
-        title: '*',
-        value: '*',
-        precedence: 4,
-      },
-      {
-        type: 'operator',
-        title: 'tan',
-        value: 'tan',
-        precedence: 7,
-      },
-      {
-        type: 'operator',
-        title: 'x²',
-        value: '^2',
-        precedence: 5,
-      },
-    ],
-    // Quarta linha
-    [
-      {
-        type: 'memory',
-        title: 'M+',
-        value: 'M+',
-      },
-      {
-        type: 'number',
-        title: '1',
-        value: '1',
-      },
-      {
-        type: 'number',
-        title: '2',
-        value: '2',
-      },
-      {
-        type: 'number',
-        title: '3',
-        value: '3',
-      },
-      {
-        type: 'operator',
-        title: '-',
-        value: '-',
-        precedence: 6,
-      },
-      {
-        type: 'operator',
-        title: 'ʸ√x',
-        value: 'ʸ√',
-        precedence: 7,
-      },
-      {
-        type: 'operator',
-        title: '√x',
-        value: '√',
-        precedence: 7,
-      },
-    ],
-    // Quinta linha
-    [
-      {
-        type: 'number',
-        title: 'pi',
-        value: '3.14',
-      },
-      {
-        type: 'number',
-        title: '0',
-        value: '0',
-      },
-      {
-        type: 'number',
-        title: '.',
-        value: '.',
-      },
-      {
-        type: 'operator',
-        title: '+/-',
-        value: '~',
-        precedence: 6,
-      },
-      {
-        type: 'operator',
-        title: '+',
-        value: '+',
-        precedence: 3,
-      },
-      {
-        type: 'operator',
-        title: '(',
-        value: '(',
-        precedence: 1,
-      },
-      {
-        type: 'operator',
-        title: ')',
-        value: ')',
-        precedence: 0,
-      },
-    ],
-    // Sexta linha
-    [
-      {
-        type: 'equals',
-        title: '=',
-        value: '=',
-      },
-    ],
-  ];
+  // function removeStackLastElement() {
+  //   setStack(prevState => prevState.slice(0, -1));
+  // }
 
   function handleOperatorPressed(keyData: CalculatorKeysProps) {
     setExpression((prevState) => [...prevState, keyData]);
@@ -315,34 +86,109 @@ export default function App() {
 
   function handleClear() {
     setExpression([]);
-    setList([]);
-    setStack([]);
+    // setList([]);
+    // setStack([]);
+    setResult(null);
   }
 
   function handleCalculateResult() {
+    const list: CalculatorKeysProps[] = [];
+    const stack: CalculatorKeysProps[] = [];
+
+    console.log('Expressão: ', expression);
+
     expression.forEach((expressionItem) => {
+      // Se for um número, adiciona direto na lista
       if (expressionItem.type === 'number') {
-        setList((prevState) => [...prevState, expressionItem]);
-      } else {
-        if (stack.length > 0) {
-          stack.forEach((stackItem, stackIndex) => {
-            if (stackItem.precedence! >= expressionItem.precedence!) {
-              setList((prevState) => [...prevState, stackItem]);
+        // setList((prevState) => [...prevState, expressionItem]);
+        list.push(expressionItem);
+      }
+      // Se for um "(" (abre parêntesis), adiciona direto na pilha
+      else if (expressionItem.precedence === 1) {
+        // setStack((prevState) => [...prevState, expressionItem]);
+        stack.push(expressionItem);
+      }
+      // Se for um ")" (fecha parêntesis), adiciona todos os elementos da pilha até encontrar um "(" (abre parêntesis)
+      else if (expressionItem.precedence === 0) {
+        let stackIndex = stack.length - 1;
 
-              setStack((prevState) => {
-                const newStack = [...prevState];
+        while (stack[stackIndex].precedence !== 1) {
+          // setList((prevState) => [...prevState, stack[stackIndex]]);
+          // removeStackLastElement();
+          const lastStackElement = stack.pop();
+          list.push(lastStackElement!);
 
-                newStack.splice(stackIndex, 1);
+          stackIndex--;
+        }
 
-                return newStack;
-              });
-            }
-          });
+        // removeStackLastElement();
+        stack.pop();
+      }
+      // Se a pilha estiver vazia, adiciona direto na pilha
+      else if (stack.length === 0) {
+        stack.push(expressionItem);
+      }
+      // Checa se algum elemento da pilha tem precedência maior ou igual ao elemento da expressão, adicionando-o na lista caso tiver
+      else {
+        let stackIndex = stack.length - 1;
 
-          setStack((prevState) => [expressionItem, ...prevState]);
-        } else setStack((prevState) => [expressionItem, ...prevState]);
+        while (stackIndex >= 0 && stack[stackIndex].precedence !== 1) {
+          if (stack[stackIndex].precedence! >= expressionItem.precedence!) {
+            list.push(stack[stackIndex]);
+            stack.splice(stackIndex, 1);
+          }
+
+          stackIndex--;
+        }
       }
     });
+
+    while (stack.length > 0) {
+      // setList((prevState) => [...prevState, stack[stack.length - 1]]);
+      // removeStackLastElement();
+      console.log(stack);
+      const lastStackElement = stack.pop();
+      list.push(lastStackElement!);
+    }
+
+    const polishStack: number[] = [];
+
+    console.log('Pilha: ', stack);
+    console.log('Lista: ', list);
+
+    for (let listIndex = 0; listIndex < list.length; listIndex++) {
+      if (list[listIndex].type === 'number') {
+        polishStack.push(parseFloat(list[listIndex].value));
+      } else if (list[listIndex].type === 'operator') {
+        const firstNumber = polishStack.pop();
+        const secondNumber = polishStack.pop();
+
+        switch (list[listIndex].value) {
+          case '+':
+            polishStack.push(secondNumber! + firstNumber!);
+            break;
+
+          case '-':
+            polishStack.push(secondNumber! - firstNumber!);
+            break;
+
+          case '*':
+            polishStack.push(secondNumber! * firstNumber!);
+            break;
+
+          case '/':
+            polishStack.push(secondNumber! / firstNumber!);
+            break;
+
+          default:
+            break;
+        }
+      }
+    }
+
+    console.log('Pilha polonesa: ', polishStack);
+
+    setResult(polishStack[0]);
   }
 
   return (
@@ -350,8 +196,18 @@ export default function App() {
       <header></header>
 
       <main className=''>
-        <div className='input-box | w-full mb-5 flex items-center justify-end text-4xl'>
-          {expression.length ? (
+        <div className='operation-box | w-full mb-5 flex items-center justify-end text-4xl'>
+          {result ? (
+            <div className='flex flex-col items-end'>
+              <div className='text-sm'>
+                {expression.map((data) => (
+                  <span>{data.value}</span>
+                ))}
+              </div>
+
+              {result}
+            </div>
+          ) : expression.length ? (
             expression.map((data) => <span>{data.value}</span>)
           ) : (
             <span>0</span>
@@ -359,6 +215,37 @@ export default function App() {
         </div>
 
         <div className='calculator-box | w-full flex flex-col gap-4'>
+          <div className='row-box | w-full flex justify-between accent-orange-600 text-lg'>
+            <div className='flex justify-start gap-2'>
+              <input
+                type='checkbox'
+                name='inv'
+                id='inv'
+              />
+              <label htmlFor='inv'>Inv</label>
+            </div>
+
+            <div className='flex gap-4'>
+              <div className='flex gap-2'>
+                <input
+                  type='radio'
+                  name='degreesOrRadians'
+                  id='degrees'
+                />
+                <label htmlFor='degrees'>Graus</label>
+              </div>
+
+              <div className='flex gap-2'>
+                <input
+                  type='radio'
+                  name='degreesOrRadians'
+                  id='radians'
+                />
+                <label htmlFor='radians'>Radianos</label>
+              </div>
+            </div>
+          </div>
+
           <div className='row-box | w-full flex justify-end gap-4'>
             <button
               className='key-box | w-16 h-16 flex items-center justify-center text-xl bg-orange-600 rounded-full hover:bg-orange-500 duration-200'
@@ -380,7 +267,7 @@ export default function App() {
             </button>
           </div>
 
-          {calculatorRows.map((row, index) => {
+          {calculatorKeys.map((row, index) => {
             return (
               <div
                 key={index}
