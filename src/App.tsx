@@ -131,9 +131,7 @@ export default function App() {
           const newExpression = [...prevState];
 
           if (item.value.length === 1) {
-            newExpression.slice(0, -1);
-
-            return newExpression;
+            return newExpression.slice(0, -1);
           }
 
           newExpression[lastExpressionIndex] = {
@@ -165,17 +163,25 @@ export default function App() {
 
     console.log('Expressão: ', expression);
 
-    expression.forEach((expressionItem) => {
+    for (
+      let expressionIndex = 0;
+      expressionIndex < expression.length;
+      expressionIndex++
+    ) {
       // Se for um número, adiciona direto na lista
-      if (expressionItem.type === 'number') {
-        list.push(expressionItem);
+      if (expression[expressionIndex].type === 'number') {
+        list.push(expression[expressionIndex]);
+
+        continue;
       }
       // Se for um "(" (abre parêntesis), adiciona direto na pilha
-      else if (expressionItem.precedence === 1) {
-        stack.push(expressionItem);
+      if (expression[expressionIndex].precedence === 1) {
+        stack.push(expression[expressionIndex]);
+
+        continue;
       }
       // Se for um ")" (fecha parêntesis), adiciona todos os elementos da pilha até encontrar um "(" (abre parêntesis)
-      else if (expressionItem.precedence === 0) {
+      if (expression[expressionIndex].precedence === 0) {
         let stackIndex = stack.length - 1;
 
         while (stack[stackIndex].precedence !== 1) {
@@ -185,62 +191,82 @@ export default function App() {
           stackIndex--;
         }
 
-        // removeStackLastElement();
         stack.pop();
+
+        continue;
       }
       // Se a pilha estiver vazia, adiciona direto na pilha
-      else if (stack.length === 0) {
-        stack.push(expressionItem);
+      if (stack.length === 0) {
+        stack.push(expression[expressionIndex]);
+
+        continue;
       }
       // Checa se algum elemento da pilha tem precedência maior ou igual ao elemento da expressão, adicionando-o na lista caso tiver
-      else {
+      if (stack.length > 0) {
         let stackIndex = stack.length - 1;
 
         while (stackIndex >= 0 && stack[stackIndex].precedence !== 1) {
-          if (stack[stackIndex].precedence! >= expressionItem.precedence!) {
-            list.push(stack[stackIndex]);
-            stack.splice(stackIndex, 1);
-          }
+          if (
+            stack[stackIndex].precedence! >=
+            expression[expressionIndex].precedence!
+          ) {
+            const lastStackElement = stack.pop();
+            list.push(lastStackElement!);
 
-          stackIndex--;
+            stackIndex--;
+          }
         }
+
+        stack.push(expression[expressionIndex]);
+
+        continue;
       }
-    });
+    }
 
     while (stack.length > 0) {
-      // removeStackLastElement();
-      console.log(stack);
       const lastStackElement = stack.pop();
       list.push(lastStackElement!);
     }
 
-    const polishStack: number[] = [];
-
     console.log('Pilha: ', stack);
     console.log('Lista: ', list);
+
+    const polishStack: number[] = [];
+    let firstNumber: number | undefined;
+    let secondNumber: number | undefined;
 
     for (let listIndex = 0; listIndex < list.length; listIndex++) {
       if (list[listIndex].type === 'number') {
         polishStack.push(parseFloat(list[listIndex].value));
       } else if (list[listIndex].type === 'operator') {
-        const firstNumber = polishStack.pop();
-        const secondNumber = polishStack.pop();
-
         switch (list[listIndex].value) {
           case '+':
+            firstNumber = polishStack.pop();
+            secondNumber = polishStack.pop();
             polishStack.push(secondNumber! + firstNumber!);
             break;
 
           case '-':
+            firstNumber = polishStack.pop();
+            secondNumber = polishStack.pop();
             polishStack.push(secondNumber! - firstNumber!);
             break;
 
           case '*':
+            firstNumber = polishStack.pop();
+            secondNumber = polishStack.pop();
             polishStack.push(secondNumber! * firstNumber!);
             break;
 
           case '/':
+            firstNumber = polishStack.pop();
+            secondNumber = polishStack.pop();
             polishStack.push(secondNumber! / firstNumber!);
+            break;
+
+          case '~':
+            firstNumber = polishStack.pop();
+            polishStack.push(-firstNumber!);
             break;
 
           default:
