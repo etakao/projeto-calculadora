@@ -15,9 +15,7 @@ export default function App() {
   const [expression, setExpression] = useState<CalculatorKeysProps[]>([]);
   const [result, setResult] = useState<number | null>();
   const [memory, setMemory] = useState<number>();
-  const [isDegreesOrRadians, setIsDegreesOrRadians] = useState<
-    'degrees' | 'radians'
-  >();
+  const [isRadians, setIsRadians] = useState<boolean>();
 
   // Adiciona o número 1 e o operador dividir à expressão
   function handleOneDividedByX() {
@@ -87,7 +85,7 @@ export default function App() {
         type: 'operator',
         title: '√x',
         value: '√',
-        precedence: 7,
+        precedence: 5,
       },
     ]);
   }
@@ -354,7 +352,7 @@ export default function App() {
                   type='radio'
                   name='degreesOrRadians'
                   id='degrees'
-                  onClick={() => setIsDegreesOrRadians('degrees')}
+                  onClick={() => setIsRadians(false)}
                 />
                 <label htmlFor='degrees'>Graus</label>
               </div>
@@ -364,7 +362,7 @@ export default function App() {
                   type='radio'
                   name='degreesOrRadians'
                   id='radians'
-                  onClick={() => setIsDegreesOrRadians('radians')}
+                  onClick={() => setIsRadians(true)}
                 />
                 <label htmlFor='radians'>Radianos</label>
               </div>
