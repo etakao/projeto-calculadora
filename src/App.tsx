@@ -77,15 +77,27 @@ export default function App() {
     setExpression((prevState) => [
       ...prevState,
       {
+        type: 'operator',
+        title: '^',
+        value: '^',
+        precedence: 5,
+      },
+      {
+        type: 'operator',
+        title: '(',
+        value: '(',
+        precedence: 1,
+      },
+      {
         type: 'number',
         title: '1',
         value: '1',
       },
       {
         type: 'operator',
-        title: '√x',
-        value: '√',
-        precedence: 5,
+        title: '/',
+        value: '/',
+        precedence: 4,
       },
     ]);
   }
@@ -210,9 +222,9 @@ export default function App() {
           ) {
             const lastStackElement = stack.pop();
             list.push(lastStackElement!);
-
-            stackIndex--;
           }
+
+          stackIndex--;
         }
 
         stack.push(expression[expressionIndex]);
@@ -220,6 +232,8 @@ export default function App() {
         continue;
       }
     }
+
+    console.log('morre aqui');
 
     while (stack.length > 0) {
       const lastStackElement = stack.pop();
@@ -241,7 +255,7 @@ export default function App() {
           case '+':
             firstNumber = polishStack.pop();
             secondNumber = polishStack.pop();
-            polishStack.push( Module._my_soma(secondNumber!, firstNumber!));
+            polishStack.push(Module._my_soma(secondNumber!, firstNumber!));
             break;
 
           case '-':
@@ -253,7 +267,9 @@ export default function App() {
           case '*':
             firstNumber = polishStack.pop();
             secondNumber = polishStack.pop();
-            polishStack.push(Module._my_multiplicacao(secondNumber!, firstNumber!));
+            polishStack.push(
+              Module._my_multiplicacao(secondNumber!, firstNumber!)
+            );
             break;
 
           case '/':
@@ -282,16 +298,16 @@ export default function App() {
             polishStack.push(Module._my_sqrt(firstNumber!));
             break;
 
-          case 'xElevadoAoQuadrado':
-            firstNumber = polishStack.pop();
-            polishStack.push(Module._my_xElevadoAoQuadrado(firstNumber!));
-            break;
+          // case 'xElevadoAoQuadrado':
+          //   firstNumber = polishStack.pop();
+          //   polishStack.push(Module._my_xElevadoAoQuadrado(firstNumber!));
+          //   break;
 
-          case 'RaizNdeX':
-            firstNumber = polishStack.pop();
-            secondNumber = polishStack.pop();
-            polishStack.push(Module._my_RaizNdeX(firstNumber!, secondNumber!));
-            break;
+          // case 'RaizNdeX':
+          //   firstNumber = polishStack.pop();
+          //   secondNumber = polishStack.pop();
+          //   polishStack.push(Module._my_RaizNdeX(firstNumber!, secondNumber!));
+          //   break;
 
           case 'log':
             firstNumber = polishStack.pop();
@@ -307,7 +323,9 @@ export default function App() {
           case '^':
             firstNumber = polishStack.pop();
             secondNumber = polishStack.pop();
-            polishStack.push(Module._my_xElevadoAy(firstNumber!, secondNumber!));
+            polishStack.push(
+              Module._my_xElevadoAy(firstNumber!, secondNumber!)
+            );
             break;
 
           case '!':
@@ -450,4 +468,3 @@ export default function App() {
     </div>
   );
 }
-
