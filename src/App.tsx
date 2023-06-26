@@ -247,12 +247,14 @@ export default function App() {
           case '+':
             firstNumber = polishStack.pop();
             secondNumber = polishStack.pop();
+            // @ts-ignore
             polishStack.push(Module._my_soma(secondNumber!, firstNumber!));
             break;
 
           case '-':
             firstNumber = polishStack.pop();
             secondNumber = polishStack.pop();
+            // @ts-ignore
             polishStack.push(Module._my_subtracao(secondNumber!, firstNumber!));
             break;
 
@@ -260,6 +262,7 @@ export default function App() {
             firstNumber = polishStack.pop();
             secondNumber = polishStack.pop();
             polishStack.push(
+              // @ts-ignore
               Module._my_multiplicacao(secondNumber!, firstNumber!)
             );
             break;
@@ -267,38 +270,46 @@ export default function App() {
           case '/':
             firstNumber = polishStack.pop();
             secondNumber = polishStack.pop();
+            // @ts-ignore
             polishStack.push(Module._my_divisao(secondNumber!, firstNumber!));
             break;
 
           case 'sin':
             firstNumber = polishStack.pop();
             if (inv) {
+              // @ts-ignore
               polishStack.push(Module._my_arcsin(firstNumber!, !isDegrees));
               break;
             }
+            // @ts-ignore
             polishStack.push(Module._my_sin(firstNumber!, isDegrees ? 1 : 0));
             break;
 
           case 'cos':
             firstNumber = polishStack.pop();
             if (inv) {
+              // @ts-ignore
               polishStack.push(Module._my_arccos(firstNumber!, !isDegrees));
               break;
             }
+            // @ts-ignore
             polishStack.push(Module._my_cos(firstNumber!, isDegrees ? 1 : 0));
             break;
 
           case 'tan':
             firstNumber = polishStack.pop();
             if (inv) {
+              // @ts-ignore
               polishStack.push(Module._my_arctg(firstNumber!, !isDegrees));
               break;
             }
+            // @ts-ignore
             polishStack.push(Module._my_tg(firstNumber!, isDegrees ? 1 : 0));
             break;
 
           case 'sqrt':
             firstNumber = polishStack.pop();
+            // @ts-ignore
             polishStack.push(Module._my_sqrt(firstNumber!));
             break;
 
@@ -316,11 +327,13 @@ export default function App() {
           case 'log':
             firstNumber = polishStack.pop();
             secondNumber = polishStack.pop();
+            // @ts-ignore
             polishStack.push(Module._my_log(firstNumber!, secondNumber!));
             break;
 
           case 'ln':
             firstNumber = polishStack.pop();
+            // @ts-ignore
             polishStack.push(Module._my_ln(firstNumber!));
             break;
 
@@ -328,12 +341,14 @@ export default function App() {
             firstNumber = polishStack.pop();
             secondNumber = polishStack.pop();
             polishStack.push(
+              // @ts-ignore
               Module._my_xElevadoAy(secondNumber!, firstNumber!)
             );
             break;
 
           case '!':
             firstNumber = polishStack.pop();
+            // @ts-ignore
             polishStack.push(Module._my_fatorial(firstNumber!));
             break;
 
