@@ -1105,6 +1105,12 @@ var _my_xElevadoAy = Module["_my_xElevadoAy"] = createExportWrapper("my_xElevado
 /** @type {function(...*):?} */
 var _my_fatorial = Module["_my_fatorial"] = createExportWrapper("my_fatorial");
 /** @type {function(...*):?} */
+var _my_arcsin = Module["_my_arcsin"] = createExportWrapper("my_arcsin");
+/** @type {function(...*):?} */
+var _my_arccos = Module["_my_arccos"] = createExportWrapper("my_arccos");
+/** @type {function(...*):?} */
+var _my_arctg = Module["_my_arctg"] = createExportWrapper("my_arctg");
+/** @type {function(...*):?} */
 var ___errno_location = createExportWrapper("__errno_location");
 /** @type {function(...*):?} */
 var _fflush = Module["_fflush"] = createExportWrapper("fflush");

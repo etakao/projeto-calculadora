@@ -16,6 +16,7 @@ export default function App() {
   const [result, setResult] = useState<number | null>();
   const [memory, setMemory] = useState<number>();
   const [isDegrees, setIsDegrees] = useState<boolean>();
+  const [inv, setIsInv] = useState<boolean>(false);
 
   // Adiciona o número 1 e o operador dividir à expressão
   function handleOneDividedByX() {
@@ -272,21 +273,35 @@ export default function App() {
 
           case 'sin':
             firstNumber = polishStack.pop();
+            if(inv){
+              console.log(firstNumber, isDegrees);
+              polishStack.push(Module._my_arcsin(firstNumber!, !isDegrees));
+              break;
+            }
             polishStack.push(Module._my_sin(firstNumber!, isDegrees ? 1 : 0));
             break;
 
           case 'cos':
             firstNumber = polishStack.pop();
+            if(inv){
+              polishStack.push(Module._my_arccos(firstNumber!, !isDegrees));
+              break;
+            }
             polishStack.push(Module._my_cos(firstNumber!, isDegrees ? 1 : 0));
             break;
 
           case 'tan':
             firstNumber = polishStack.pop();
+            if(inv){
+              polishStack.push(Module._my_arctg(firstNumber!,!isDegrees));
+              break;
+            }
             polishStack.push(Module._my_tg(firstNumber!, isDegrees ? 1 : 0));
             break;
 
           case 'sqrt':
             firstNumber = polishStack.pop();
+            console.log('teste aqui', firstNumber);
             polishStack.push(Module._my_sqrt(firstNumber!));
             break;
 
@@ -315,8 +330,9 @@ export default function App() {
           case '^':
             firstNumber = polishStack.pop();
             secondNumber = polishStack.pop();
+            console.log('teste aqui', secondNumber, firstNumber);
             polishStack.push(
-              Module._my_xElevadoAy(firstNumber!, secondNumber!)
+              Module._my_xElevadoAy(secondNumber!, firstNumber!)
             );
             break;
 
@@ -328,7 +344,7 @@ export default function App() {
           case '~':
             firstNumber = polishStack.pop();
             polishStack.push(-firstNumber!);
-            break;
+            break; 
 
           default:
             break;
@@ -405,6 +421,7 @@ export default function App() {
                 type='checkbox'
                 name='inv'
                 id='inv'
+                onClick={() => setIsInv(!inv)}
               />
               <label htmlFor='inv'>Inv</label>
             </div>
