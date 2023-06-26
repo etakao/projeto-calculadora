@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Delete } from 'lucide-react';
 
 import { OrangeButton } from './components/OrangeButton';
@@ -15,7 +15,7 @@ export default function App() {
   const [expression, setExpression] = useState<CalculatorKeysProps[]>([]);
   const [result, setResult] = useState<number | null>();
   const [memory, setMemory] = useState<number>();
-  const [isRadians, setIsRadians] = useState<boolean>();
+  const [isDegrees, setIsDegrees] = useState<boolean>();
 
   // Adiciona o número 1 e o operador dividir à expressão
   function handleOneDividedByX() {
@@ -241,25 +241,78 @@ export default function App() {
           case '+':
             firstNumber = polishStack.pop();
             secondNumber = polishStack.pop();
-            polishStack.push(secondNumber! + firstNumber!);
+            polishStack.push( Module._my_soma(secondNumber!, firstNumber!));
             break;
 
           case '-':
             firstNumber = polishStack.pop();
             secondNumber = polishStack.pop();
-            polishStack.push(secondNumber! - firstNumber!);
+            polishStack.push(Module._my_subtracao(secondNumber!, firstNumber!));
             break;
 
           case '*':
             firstNumber = polishStack.pop();
             secondNumber = polishStack.pop();
-            polishStack.push(secondNumber! * firstNumber!);
+            polishStack.push(Module._my_multiplicacao(secondNumber!, firstNumber!));
             break;
 
           case '/':
             firstNumber = polishStack.pop();
             secondNumber = polishStack.pop();
-            polishStack.push(secondNumber! / firstNumber!);
+            polishStack.push(Module._my_divisao(secondNumber!, firstNumber!));
+            break;
+
+          case 'sin':
+            firstNumber = polishStack.pop();
+            polishStack.push(Module._my_sin(firstNumber!, isDegrees ? 1 : 0));
+            break;
+
+          case 'cos':
+            firstNumber = polishStack.pop();
+            polishStack.push(Module._my_cos(firstNumber!, isDegrees ? 1 : 0));
+            break;
+
+          case 'tan':
+            firstNumber = polishStack.pop();
+            polishStack.push(Module._my_tg(firstNumber!, isDegrees ? 1 : 0));
+            break;
+
+          case 'sqrt':
+            firstNumber = polishStack.pop();
+            polishStack.push(Module._my_sqrt(firstNumber!));
+            break;
+
+          case 'xElevadoAoQuadrado':
+            firstNumber = polishStack.pop();
+            polishStack.push(Module._my_xElevadoAoQuadrado(firstNumber!));
+            break;
+
+          case 'RaizNdeX':
+            firstNumber = polishStack.pop();
+            secondNumber = polishStack.pop();
+            polishStack.push(Module._my_RaizNdeX(firstNumber!, secondNumber!));
+            break;
+
+          case 'log':
+            firstNumber = polishStack.pop();
+            secondNumber = polishStack.pop();
+            polishStack.push(Module._my_log(firstNumber!, secondNumber!));
+            break;
+
+          case 'ln':
+            firstNumber = polishStack.pop();
+            polishStack.push(Module._my_ln(firstNumber!));
+            break;
+
+          case '^':
+            firstNumber = polishStack.pop();
+            secondNumber = polishStack.pop();
+            polishStack.push(Module._my_xElevadoAy(firstNumber!, secondNumber!));
+            break;
+
+          case '!':
+            firstNumber = polishStack.pop();
+            polishStack.push(Module._my_fatorial(firstNumber!));
             break;
 
           case '~':
@@ -352,7 +405,7 @@ export default function App() {
                   type='radio'
                   name='degreesOrRadians'
                   id='degrees'
-                  onClick={() => setIsRadians(false)}
+                  onClick={() => setIsDegrees(true)}
                 />
                 <label htmlFor='degrees'>Graus</label>
               </div>
@@ -362,7 +415,7 @@ export default function App() {
                   type='radio'
                   name='degreesOrRadians'
                   id='radians'
-                  onClick={() => setIsRadians(true)}
+                  onClick={() => setIsDegrees(false)}
                 />
                 <label htmlFor='radians'>Radianos</label>
               </div>

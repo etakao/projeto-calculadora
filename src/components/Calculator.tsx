@@ -185,7 +185,7 @@ export function Calculator({
       {
         type: 'operator',
         title: '√x',
-        value: '√',
+        value: 'sqrt',
         precedence: 5,
       },
     ],
