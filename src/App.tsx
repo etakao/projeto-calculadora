@@ -309,7 +309,6 @@ export default function App() {
 
           case 'sqrt':
             firstNumber = polishStack.pop();
-            // @ts-ignore
             polishStack.push(Module._my_sqrt(firstNumber!));
             break;
 
