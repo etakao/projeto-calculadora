@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Delete } from 'lucide-react';
 
 import { OrangeButton } from './components/OrangeButton';
@@ -172,9 +172,6 @@ export default function App() {
     const list: CalculatorKeysProps[] = [];
     const stack: CalculatorKeysProps[] = [];
 
-    console.log({expression: expression});
-    
-
     for (
       let expressionIndex = 0;
       expressionIndex < expression.length;
@@ -212,7 +209,7 @@ export default function App() {
       // Checa se algum elemento da pilha tem precedência maior ou igual ao elemento da expressão, adicionando-o na lista caso tiver
       if (stack.length > 0) {
         let stackIndex = stack.length - 1;
-        console.log('5',stack);
+
         while (stackIndex >= 0 && stack[stackIndex].precedence !== 1) {
           if (
             stack[stackIndex].precedence! >=
@@ -229,6 +226,7 @@ export default function App() {
         continue;
       }
     }
+
     while (stack.length > 0) {
       const lastStackElement = stack.pop();
       list.push(lastStackElement!);
@@ -261,8 +259,9 @@ export default function App() {
           case '*':
             firstNumber = polishStack.pop();
             secondNumber = polishStack.pop();
-            console.log(firstNumber, secondNumber);
-            polishStack.push(Module._my_multiplicacao(secondNumber!, firstNumber!));
+            polishStack.push(
+              Module._my_multiplicacao(secondNumber!, firstNumber!)
+            );
             break;
 
           case '/':
@@ -273,8 +272,7 @@ export default function App() {
 
           case 'sin':
             firstNumber = polishStack.pop();
-            if(inv){
-              console.log(firstNumber, isDegrees);
+            if (inv) {
               polishStack.push(Module._my_arcsin(firstNumber!, !isDegrees));
               break;
             }
@@ -283,7 +281,7 @@ export default function App() {
 
           case 'cos':
             firstNumber = polishStack.pop();
-            if(inv){
+            if (inv) {
               polishStack.push(Module._my_arccos(firstNumber!, !isDegrees));
               break;
             }
@@ -292,8 +290,8 @@ export default function App() {
 
           case 'tan':
             firstNumber = polishStack.pop();
-            if(inv){
-              polishStack.push(Module._my_arctg(firstNumber!,!isDegrees));
+            if (inv) {
+              polishStack.push(Module._my_arctg(firstNumber!, !isDegrees));
               break;
             }
             polishStack.push(Module._my_tg(firstNumber!, isDegrees ? 1 : 0));
@@ -301,7 +299,6 @@ export default function App() {
 
           case 'sqrt':
             firstNumber = polishStack.pop();
-            console.log('teste aqui', firstNumber);
             polishStack.push(Module._my_sqrt(firstNumber!));
             break;
 
@@ -330,7 +327,6 @@ export default function App() {
           case '^':
             firstNumber = polishStack.pop();
             secondNumber = polishStack.pop();
-            console.log('teste aqui', secondNumber, firstNumber);
             polishStack.push(
               Module._my_xElevadoAy(secondNumber!, firstNumber!)
             );
@@ -344,7 +340,7 @@ export default function App() {
           case '~':
             firstNumber = polishStack.pop();
             polishStack.push(-firstNumber!);
-            break; 
+            break;
 
           default:
             break;
