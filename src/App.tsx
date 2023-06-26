@@ -159,7 +159,8 @@ export default function App() {
     const list: CalculatorKeysProps[] = [];
     const stack: CalculatorKeysProps[] = [];
 
-    console.log('Expressão: ', expression);
+    console.log({expression: expression});
+    
 
     for (
       let expressionIndex = 0;
@@ -169,19 +170,16 @@ export default function App() {
       // Se for um número, adiciona direto na lista
       if (expression[expressionIndex].type === 'number') {
         list.push(expression[expressionIndex]);
-
         continue;
       }
       // Se for um "(" (abre parêntesis), adiciona direto na pilha
       if (expression[expressionIndex].precedence === 1) {
         stack.push(expression[expressionIndex]);
-
         continue;
       }
       // Se for um ")" (fecha parêntesis), adiciona todos os elementos da pilha até encontrar um "(" (abre parêntesis)
       if (expression[expressionIndex].precedence === 0) {
         let stackIndex = stack.length - 1;
-
         while (stack[stackIndex].precedence !== 1) {
           const lastStackElement = stack.pop();
           list.push(lastStackElement!);
@@ -196,13 +194,12 @@ export default function App() {
       // Se a pilha estiver vazia, adiciona direto na pilha
       if (stack.length === 0) {
         stack.push(expression[expressionIndex]);
-
         continue;
       }
       // Checa se algum elemento da pilha tem precedência maior ou igual ao elemento da expressão, adicionando-o na lista caso tiver
       if (stack.length > 0) {
         let stackIndex = stack.length - 1;
-
+        console.log('5',stack);
         while (stackIndex >= 0 && stack[stackIndex].precedence !== 1) {
           if (
             stack[stackIndex].precedence! >=
@@ -210,9 +207,8 @@ export default function App() {
           ) {
             const lastStackElement = stack.pop();
             list.push(lastStackElement!);
-
-            stackIndex--;
           }
+          stackIndex--;
         }
 
         stack.push(expression[expressionIndex]);
@@ -220,7 +216,6 @@ export default function App() {
         continue;
       }
     }
-
     while (stack.length > 0) {
       const lastStackElement = stack.pop();
       list.push(lastStackElement!);
@@ -253,6 +248,7 @@ export default function App() {
           case '*':
             firstNumber = polishStack.pop();
             secondNumber = polishStack.pop();
+            console.log(firstNumber, secondNumber);
             polishStack.push(Module._my_multiplicacao(secondNumber!, firstNumber!));
             break;
 
